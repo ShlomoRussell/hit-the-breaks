@@ -3,14 +3,14 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-const { getUserByUsername, addUser } = require("../dal/dal");
+const { getUserByUsernameOrEmail, addUser } = require("../bl");
 require("dotenv").config();
 const auth = Router();
 const saltRounds = 10;
 
 const registerSchema = Joi.object({
   email: Joi.string().email({ minDomainSegments: 2 }).required(),
-  username: Joi.string().min(6).max(40).required(),
+  username: Joi.string().min(3).max(40).required(),
   password: Joi.string().min(6).max(40).required(),
   firstName: Joi.string().min(3).max(40).required(),
   lastName: Joi.string().min(6).max(40).required(),
@@ -32,17 +32,22 @@ auth.post("/register", async (req, res) => {
   delete value["confirmPassword"];
   try {
     const newUser = await addUser({ ...value, password: hash, id: uuidv4() });
-
-    const token = jwt.sign(
-      { username: value.username, id: newUser.id },
-      process.env.SECRET_KEY
-    );
-    res.status(201).json({ token: token, id: newUser.id });
+console.log(newUser);
+    if (newUser) {
+      const token = jwt.sign(
+        { username: value.username, id: newUser.id },
+        process.env.SECRET_KEY
+      ); res.status(201).json({ token, id: newUser.id });
+    }
+   
   } catch (error) {
-    if (error.sqlMessage.split(" ")[0] === "Duplicate");
-    return res
-      .status(409)
-      .send("Username already exist! Please try a different one!");
+    if (error.message.split(" ")[0] === "Duplicate") {
+      return res
+        .status(409)
+        .send("Username already exist! Please try a different one!");
+    }
+    console.log(error.message)
+    return res.sendStatus(500);
   }
 });
 
@@ -59,7 +64,7 @@ auth.post("/login", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    const user = await getUserByUsername({ username, email });
+    const user = await getUserByUsernameOrEmail({ username, email });
 
     const result = await bcrypt.compare(password, user.password);
     if (!result) return res.status(404).send("Incorrect password!");
