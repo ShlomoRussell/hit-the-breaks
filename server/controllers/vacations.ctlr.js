@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { getAllVacations, addVacation } = require("../dal/dal");
+const { getAllVacations, addVacation } = require("../bl");
 const Joi = require("joi");
 const {adminMiddleware} = require("../middlewares");
 const vacations = Router();
@@ -27,7 +27,7 @@ vacations.post("/", adminMiddleware, (req, res) => {
     if (error) return res.status(400).send(error.message);
     try {
          addVacation(value);
-         res.sendStatus();
+         res.sendStatus(200);
     } catch (error) {
         console.log(error)
     }

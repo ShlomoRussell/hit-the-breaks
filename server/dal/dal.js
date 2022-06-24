@@ -1,4 +1,5 @@
-const {createPool}=require("mysql")
+const { createPool } = require("mysql");
+const { promisify } = require("util");
 
 const pool = createPool({
   connectionLimit: 100, //important
@@ -9,34 +10,35 @@ const pool = createPool({
   debug: false,
 });
 
-const getUserByUsername = async (payload) => {
-  const selectBy = payload.username ? "username" : 'email'; 
- return new Promise((res, rej) => {
-   pool.query(
-     `SELECT * FROM users WHERE ${selectBy} = ?`,
-     payload.username||payload.email,
-     (err, data) => {
-       if (err) return rej(err);
-       if (data.length === 0) return rej(new Error("Username not found!"));
-       return res(data.map(d=>({...d}))[0]);
-     }
-   );
- }) 
+const queryAsync = promisify(pool.query).bind(pool);
+
+const getUserByUsernameOrEmail = async (payload) => {
+  return await queryAsync(
+    "CALL `SELECT_USER`(?);",
+    payload.username || payload.email
+  );
 };
 
-
 const addUser = async (newUser) => {
-  const newUserValues = Object.values(newUser);
-  console.log(newUserValues)
-  return new Promise((res, rej) => {
-    pool.query(
-      "INSERT INTO `users`(`email`,`username`,`first_name`, `last_name`, `password`,`id`) VALUES (?,?,?,?,?,?)",
-      newUserValues,
-      (err, data) => {
-        if (err) return rej(err);
-        res(data);
-      }
-    );
-  })
-}
-module.exports= { getUserByUsername, addUser };
+  return queryAsync("CALL `ADD_USER`(?, ?, ?, ?, ?, ?);", newUser);
+};
+
+const getAllVacations = async () => {
+  return await queryAsync("CALL GET_ALL_VACATIONS();");
+};
+
+const checkIfIsAdmin = async (id) => {
+  return queryAsync("CALL `CHECK_IF_IS_ADMIN`(?);", id);
+};
+
+const addVacation = (vacation) => {
+  return queryAsync("CALL `ADD_VACATION`(?, ?, ?, ?, ?, ?);", vacation);
+};
+
+module.exports = {
+  getUserByUsernameOrEmail,
+  addUser,
+  getAllVacations,
+  checkIfIsAdmin,
+  addVacation,
+};
