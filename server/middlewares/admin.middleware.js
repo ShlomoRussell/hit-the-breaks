@@ -1,4 +1,4 @@
-const { checkIfIsAdmin } = require("../dal/dal");
+const { checkIfIsAdmin } = require("../bl");
 
 module.exports = async function (req, res, next) {
   try {

@@ -1,3 +1,3 @@
 const UserModel =require("./user.model");
-
-module.exports= { UserModel };
+const VacationModel= require('./vacation.model')
+module.exports = { UserModel, VacationModel };
