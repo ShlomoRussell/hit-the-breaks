@@ -8,6 +8,6 @@ module.exports = function (req, res, next) {
     req.headers.id = payload.id;
     next();
   } catch (ex) {
-    res.status(401).send();
+    return res.status(401).send();
   }
 };
