@@ -12,33 +12,46 @@ const pool = createPool({
 
 const queryAsync = promisify(pool.query).bind(pool);
 
-const getUserByUsernameOrEmail = async (payload) => {
-  return await queryAsync(
-    "CALL `SELECT_USER`(?);",
-    payload.username || payload.email
+const getUserByUsernameOrEmail = async (payload) =>
+  await queryAsync("CALL `SELECT_USER`(?);", payload.username || payload.email);
+
+const addUser = async (newUser) =>
+  queryAsync("CALL `ADD_USER`(?, ?, ?, ?, ?, ?);", newUser);
+
+const dalGetAllVactaions = async () =>
+  await queryAsync("CALL GET_ALL_VACATIONS();");
+
+const dalCheckIfisAdmin = async (id) =>
+  queryAsync("CALL `CHECK_IF_IS_ADMIN`(?);", id);
+
+const dalAddVacation = async (vacation) =>
+  queryAsync("CALL `ADD_VACATION`(?, ?, ?, ?, ?, ?);", vacation);
+
+const updateVacation = async (update, id) =>
+  queryAsync(
+    "UPDATE `vacations` SET " +
+      Object.keys(update)
+        .map((key) => `${key} = ?`)
+        .join(", ") +
+      " WHERE id = ?",
+    [...Object.values(update), id]
   );
-};
 
-const addUser = async (newUser) => {
-  return queryAsync("CALL `ADD_USER`(?, ?, ?, ?, ?, ?);", newUser);
-};
+const deleteVacation = async (id) =>
+  queryAsync("CALL `DELETE_VACATION`(?);", id);
+  
+const followVacation = async (ids) =>
+  queryAsync("CALL`FOLLOW_VACATION`(?,?);", ids);
 
-const getAllVacations = async () => {
-  return await queryAsync("CALL GET_ALL_VACATIONS();");
-};
-
-const checkIfIsAdmin = async (id) => {
-  return queryAsync("CALL `CHECK_IF_IS_ADMIN`(?);", id);
-};
-
-const addVacation = (vacation) => {
-  return queryAsync("CALL `ADD_VACATION`(?, ?, ?, ?, ?, ?);", vacation);
-};
-
+const unFollowVacation = async (ids) => queryAsync("CALL `UNFOLLOW_VACATION`(?,?)",ids);
 module.exports = {
   getUserByUsernameOrEmail,
   addUser,
-  getAllVacations,
-  checkIfIsAdmin,
-  addVacation,
+  dalGetAllVactaions,
+  dalCheckIfisAdmin,
+  dalAddVacation,
+  updateVacation,
+  deleteVacation,
+  followVacation,
+  unFollowVacation,
 };

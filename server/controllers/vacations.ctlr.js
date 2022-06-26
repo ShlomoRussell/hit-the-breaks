@@ -1,36 +1,85 @@
 const { Router } = require("express");
 const { getAllVacations, addVacation } = require("../bl");
-const Joi = require("joi");
-const {adminMiddleware} = require("../middlewares");
+const {
+  updateVacation,
+  deleteVacation,
+  followVacation,
+  unFollowVacation,
+} = require("../dal/dal");
+const {
+  isAdminMiddleware,
+  validatedVacationMiddleware,
+  isUserMiddleware,
+} = require("../middlewares");
 const vacations = Router();
 
 vacations.get("/", async (req, res) => {
   try {
     const vacations = await getAllVacations();
-    res.send(vacations);
+    return res.send(vacations);
   } catch (error) {
     console.log(error);
+    return res.sendStatus(500);
   }
 });
 
-const vacationSchema = Joi.object({
-  desription: Joi.string().min(10).max(36000),
-  destination: Joi.string().min(3).max(60).required(),
-  picture: Joi.string().min(4).max(100).optional().allow(null),
-  startDate: Joi.date().required(),
-  endDate: Joi.date().required(),
-  price: Joi.number().precision(2),
+vacations.use("/follow", isUserMiddleware);
+
+vacations.post("/follow/:vacationId", async (req, res) => {
+  const vacationId = req.params.vacationId;
+  const userId = req.headers.id;
+  try {
+    await followVacation([userId, vacationId]);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+vacations.delete("/follow/:vacationId", async (req, res) => {
+  const vacationId = req.params.vacationId;
+  const userId = req.headers.id;
+  try {
+    await unFollowVacation([userId, vacationId]);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
 });
 
-vacations.post("/", adminMiddleware, (req, res) => {
-    const { error, value } = vacationSchema.validate(req.body);
-    if (error) return res.status(400).send(error.message);
-    try {
-         addVacation(value);
-         res.sendStatus(200);
-    } catch (error) {
-        console.log(error)
-    }
+vacations.use("/", isAdminMiddleware);
+
+vacations.delete("/:vacationId", async (req, res) => {
+  const vacationId = req.params.vacationId;
+  try {
+    await deleteVacation(vacationId);
+    return res.sendStatus(200);
+  } catch (error) {
+    return res.sendStatus(500);
+  }
 });
 
+vacations.use("/", validatedVacationMiddleware);
+
+vacations.post("/", async (req, res) => {
+  try {
+    await addVacation(req.body);
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
+
+vacations.put("/:vacationId", async (req, res) => {
+  const vacationId = req.params.vacationId;
+  try {
+    const isUpdated = await updateVacation(req.body, vacationId);
+    if (isUpdated) return res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500);
+  }
+});
 module.exports = vacations;
