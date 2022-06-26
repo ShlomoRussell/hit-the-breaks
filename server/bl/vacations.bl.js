@@ -1,7 +1,8 @@
 const {
-  getAllVacations: dalGetAllVactaions,
-  checkIfIsAdmin: dalCheckIfisAdmin,
-  addVacation: dalAddVacation,
+  dalGetAllVactaions,
+  dalCheckIfisAdmin,
+  dalAddVacation,
+  dalUpdateVacation,
 } = require("../dal/dal");
 const { VacationModel } = require("../models");
 
@@ -30,9 +31,14 @@ async function checkIfIsAdmin(id) {
       .filter((d) => Array.isArray(d))[0]
       .map((d) => d.isAdmin)[0];
     if (isAdmin) return true;
-    throw new Error("Not an admin");
+    return false;
   } catch (error) {
     throw new Error(error.message);
   }
 }
-module.exports = { getAllVacations, addVacation, checkIfIsAdmin };
+
+module.exports = {
+  getAllVacations,
+  addVacation,
+  checkIfIsAdmin,
+};

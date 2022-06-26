@@ -18,7 +18,6 @@ async function getUserByUsernameOrEmail(payload) {
 
 async function addUser(payload) {
   const newUser = new UserModel(...Object.values(payload));
-  console.log(Object.values(newUser), newUser, Object.values(payload));
   try {
     await dalAddUser(Object.values(newUser));
     return newUser;
