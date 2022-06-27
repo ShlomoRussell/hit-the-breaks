@@ -39,11 +39,15 @@ const updateVacation = async (update, id) =>
 
 const deleteVacation = async (id) =>
   queryAsync("CALL `DELETE_VACATION`(?);", id);
-  
+
 const followVacation = async (ids) =>
   queryAsync("CALL`FOLLOW_VACATION`(?,?);", ids);
 
-const unFollowVacation = async (ids) => queryAsync("CALL `UNFOLLOW_VACATION`(?,?)",ids);
+const unFollowVacation = async (ids) =>
+  queryAsync("CALL `UNFOLLOW_VACATION`(?,?)", ids);
+
+const dalGetFollowerReports = async () => queryAsync("CALL `GET_FOLLOWER_REPORT`()");
+
 module.exports = {
   getUserByUsernameOrEmail,
   addUser,
@@ -54,4 +58,5 @@ module.exports = {
   deleteVacation,
   followVacation,
   unFollowVacation,
+  dalGetFollowerReports,
 };

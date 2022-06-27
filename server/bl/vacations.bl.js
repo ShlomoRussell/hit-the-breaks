@@ -2,14 +2,15 @@ const {
   dalGetAllVactaions,
   dalCheckIfisAdmin,
   dalAddVacation,
-  dalUpdateVacation,
 } = require("../dal/dal");
 const { VacationModel } = require("../models");
 
 async function getAllVacations() {
   try {
     const vacations = await dalGetAllVactaions();
-    return vacations.filter((d) => Array.isArray(d))[0].map((d) => ({ ...d }));
+    return vacations
+      .filter((data) => Array.isArray(data))[0]
+      .map((data) => new VacationModel(...Object.values(data)));
   } catch (error) {
     throw new Error(error.message);
   }
@@ -17,6 +18,7 @@ async function getAllVacations() {
 
 async function addVacation(payload) {
   const vacation = new VacationModel(...Object.values(payload));
+  console.log(vacation);
   try {
     dalAddVacation(Object.values(vacation));
   } catch (error) {

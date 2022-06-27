@@ -1,3 +1,4 @@
+const getFollowerReports = require("./reports.bl");
 const { addUser, getUserByUsernameOrEmail } = require("./users.bl");
 const {
   getAllVacations,
@@ -11,4 +12,5 @@ module.exports = {
   getAllVacations,
   checkIfIsAdmin,
   addVacation,
+  getFollowerReports,
 };
