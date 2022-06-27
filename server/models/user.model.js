@@ -1,10 +1,4 @@
 class UserModel {
-  email;
-  username;
-  password;
-  firstName;
-  lastName;
-  id;
   /**
    * @param {string} id
    * @param {string} email
