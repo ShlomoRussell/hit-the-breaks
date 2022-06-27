@@ -36,19 +36,22 @@ function validateLoginMiddleware(req, res, next) {
 }
 
 function validatedVacationMiddleware(req, res, next) {
+  if (req.files && Object.keys(req.body).length === 0) return next();
+
   const vacationSchema = Joi.object({
-    desription: Joi.string().min(10).max(36000),
+    description: Joi.string().min(10).max(36000),
     destination: Joi.string().min(3).max(60),
-    picture: Joi.string().min(4).max(100).optional().allow(null),
     startDate: Joi.date(),
     endDate: Joi.date(),
     price: Joi.number().precision(2),
   }).alter({
     POST: (schema) => schema.required(),
-    PUT: (schema) => schema.min(1).error(new Error("You must change at least one thing")),
+    PUT: (schema) =>
+      schema.min(1).error(new Error("You must change at least one thing")),
   });
 
   const { error, value } = vacationSchema.tailor(req.method).validate(req.body);
+  req.body = value;
   if (error) return res.status(400).send(error.message);
 
   next();
