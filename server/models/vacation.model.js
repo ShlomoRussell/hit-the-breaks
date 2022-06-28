@@ -26,4 +26,4 @@ class VacationModel {
     this.id = id;
   }
 }
-module.exports = VacationModel;
+export default VacationModel;

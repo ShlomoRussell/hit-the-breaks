@@ -1,9 +1,5 @@
-const {
-  dalGetAllVactaions,
-  dalCheckIfisAdmin,
-  dalAddVacation,
-} = require("../dal/dal");
-const { VacationModel } = require("../models");
+import { dalGetAllVactaions, dalCheckIfisAdmin, dalAddVacation } from "../dal/dal.js";
+import { VacationModel } from "../models/index.js";
 
 async function getAllVacations() {
   try {
@@ -39,7 +35,7 @@ async function checkIfIsAdmin(id) {
   }
 }
 
-module.exports = {
+export  {
   getAllVacations,
   addVacation,
   checkIfIsAdmin,

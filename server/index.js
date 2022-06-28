@@ -1,10 +1,11 @@
-const express = require("express");
-const { authRouter, vacationsRouter, reportsRouter } = require("./controllers");
-const { jwtMiddleware } = require("./middlewares");
-require("dotenv").config();
+import express, { urlencoded, json } from "express";
+import { authRouter, vacationsRouter, reportsRouter } from "./controllers/index.js";
+import { jwtMiddleware } from "./middlewares/index.js";
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(urlencoded({ extended: true }));
+app.use(json());
 
 app.use(express.static("static"));
 app.use('/images',express.static('uploads'))

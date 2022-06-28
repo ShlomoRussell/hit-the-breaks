@@ -1,4 +1,4 @@
-const { dalGetFollowerReports } = require("../dal/dal");
+import { dalGetFollowerReports } from "../dal/dal.js";
 
 async function getFollowerReports() {
   try {
@@ -9,4 +9,4 @@ async function getFollowerReports() {
   }
 }
 
-module.exports = getFollowerReports;
+export default getFollowerReports;

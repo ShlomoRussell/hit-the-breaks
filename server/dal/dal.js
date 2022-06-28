@@ -1,5 +1,5 @@
-const { createPool } = require("mysql");
-const { promisify } = require("util");
+import { createPool } from "mysql";
+import { promisify } from "util";
 
 const pool = createPool({
   connectionLimit: 100, //important
@@ -12,10 +12,10 @@ const pool = createPool({
 
 const queryAsync = promisify(pool.query).bind(pool);
 
-const getUserByUsernameOrEmail = async (payload) =>
+const dalGetUserByUsernameOrEmail = async (payload) =>
   await queryAsync("CALL `SELECT_USER`(?);", payload.username || payload.email);
 
-const addUser = async (newUser) =>
+const dalAddUser = async (newUser) =>
   queryAsync("CALL `ADD_USER`(?, ?, ?, ?, ?, ?);", newUser);
 
 const dalGetAllVactaions = async () =>
@@ -48,9 +48,9 @@ const unFollowVacation = async (ids) =>
 
 const dalGetFollowerReports = async () => queryAsync("CALL `GET_FOLLOWER_REPORT`()");
 
-module.exports = {
-  getUserByUsernameOrEmail,
-  addUser,
+export {
+  dalGetUserByUsernameOrEmail,
+  dalAddUser,
   dalGetAllVactaions,
   dalCheckIfisAdmin,
   dalAddVacation,

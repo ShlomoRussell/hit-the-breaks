@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const { getFollowerReports } = require("../bl");
-const { isAdminMiddleware } = require("../middlewares");
+import { Router } from "express";
+import { getFollowerReports } from "../bl/index.js";
+import { isAdminMiddleware } from "../middlewares/index.js";
 
 const reports = Router();
 
@@ -15,4 +15,4 @@ reports.get("/", async (req, res) => {
   }
 });
 
-module.exports = reports;
+export default reports;

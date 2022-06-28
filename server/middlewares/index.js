@@ -1,13 +1,13 @@
-const jwtMiddleware = require("./jwt.middleware");
-const isAdminMiddleware = require("./admin.middleware");
-const isUserMiddleware = require("./user.middleware");
-const {
+import jwtMiddleware from "./jwt.middleware.js";
+import isAdminMiddleware from "./admin.middleware.js";
+import isUserMiddleware from "./user.middleware.js";
+import {
   validateRegisterMiddleware,
   validateLoginMiddleware,
   validatedVacationMiddleware,
-} = require("../middlewares/validationMiddlewares");
+} from "./validation.middlewares.js";
 
-module.exports = {
+export {
   jwtMiddleware,
   isAdminMiddleware,
   isUserMiddleware,

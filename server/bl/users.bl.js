@@ -1,8 +1,5 @@
-const {
-  getUserByUsernameOrEmail: dalGetUserByUsernameOrEmail,
-  addUser: dalAddUser,
-} = require("../dal/dal");
-const { UserModel } = require("../models");
+import { dalGetUserByUsernameOrEmail, dalAddUser } from "../dal/dal.js";
+import { UserModel } from "../models/index.js";
 
 async function getUserByUsernameOrEmail(payload) {
   try {
@@ -22,8 +19,8 @@ async function addUser(payload) {
     await dalAddUser(Object.values(newUser));
     return newUser;
   } catch (error) {
-    throw new Error(error.sqlMessage);
+    throw new Error(error.message);
   }
 }
 
-module.exports = { getUserByUsernameOrEmail, addUser };
+export { getUserByUsernameOrEmail, addUser };

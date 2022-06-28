@@ -1,18 +1,9 @@
-const { Router } = require("express");
-const { v4: uuidv4 } = require("uuid");
-const fileUpload = require("express-fileupload");
-const { getAllVacations, addVacation } = require("../bl");
-const {
-  updateVacation,
-  deleteVacation,
-  followVacation,
-  unFollowVacation,
-} = require("../dal/dal");
-const {
-  isAdminMiddleware,
-  validatedVacationMiddleware,
-  isUserMiddleware,
-} = require("../middlewares");
+import { Router } from "express";
+import { v4 as uuidv4 } from "uuid";
+import fileUpload from "express-fileupload";
+import { getAllVacations, addVacation } from "../bl/index.js";
+import { updateVacation, deleteVacation, followVacation, unFollowVacation } from "../dal/dal.js";
+import { isAdminMiddleware, validatedVacationMiddleware, isUserMiddleware } from "../middlewares/index.js";
 const vacations = Router();
 vacations.use(
   fileUpload({
@@ -115,4 +106,4 @@ vacations.put("/:vacationId", async (req, res) => {
     return res.sendStatus(500);
   }
 });
-module.exports = vacations;
+export default vacations;

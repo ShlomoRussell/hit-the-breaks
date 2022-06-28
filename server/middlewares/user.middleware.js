@@ -1,6 +1,6 @@
-const { checkIfIsAdmin } = require("../bl");
+import { checkIfIsAdmin } from "../bl/index.js";
 
-module.exports = async function (req, res, next) {
+export default async function (req, res, next) {
   try {
     const res = await checkIfIsAdmin(req.headers.id);
     if (!res)return next();

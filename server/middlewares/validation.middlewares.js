@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 function validateRegisterMiddleware(req, res, next) {
   const registerSchema = Joi.object({
@@ -6,7 +6,7 @@ function validateRegisterMiddleware(req, res, next) {
     username: Joi.string().min(3).max(40).required(),
     password: Joi.string().min(6).max(40).required(),
     firstName: Joi.string().min(3).max(40).required(),
-    lastName: Joi.string().min(6).max(40).required(),
+    lastName: Joi.string().min(3).max(40).required(),
     confirmPassword: Joi.string()
       .required()
       .valid(Joi.ref("password"))
@@ -56,7 +56,7 @@ function validatedVacationMiddleware(req, res, next) {
 
   next();
 }
-module.exports = {
+export {
   validateLoginMiddleware,
   validateRegisterMiddleware,
   validatedVacationMiddleware,

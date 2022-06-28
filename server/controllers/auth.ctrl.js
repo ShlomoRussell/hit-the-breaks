@@ -1,19 +1,16 @@
-const { Router } = require("express");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const { v4: uuidv4 } = require("uuid");
-const { getUserByUsernameOrEmail, addUser } = require("../bl");
-const {
-  validateRegisterMiddleware,
-  validateLoginMiddleware,
-} = require("../middlewares");
-
-require("dotenv").config();
+import { Router } from "express";
+import jwt from "jsonwebtoken";
+import { hash as _hash, compare } from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import { getUserByUsernameOrEmail, addUser } from "../bl/index.js";
+import { validateRegisterMiddleware, validateLoginMiddleware } from "../middlewares/index.js";
+import dotenv from "dotenv";
+dotenv.config();
 const auth = Router();
 const saltRounds = 10;
 
 auth.post("/register", validateRegisterMiddleware, async (req, res) => {
-  const hash = await bcrypt.hash(req.body.password, saltRounds);
+  const hash = await _hash(req.body.password, saltRounds);
 
   try {
     const newUser = await addUser({
@@ -30,7 +27,7 @@ auth.post("/register", validateRegisterMiddleware, async (req, res) => {
       res.status(201).json({ token, id: newUser.id });
     }
   } catch (error) {
-    if (error.message.split(" ")[0] === "Duplicate") {
+    if (error.message.split(" ")[1] === "Duplicate") {
       return res
         .status(409)
         .send("Username already exist! Please try a different one!");
@@ -45,10 +42,10 @@ auth.post("/login", validateLoginMiddleware, async (req, res) => {
   try {
     const user = await getUserByUsernameOrEmail({ username, email });
 
-    const result = await bcrypt.compare(password, user.password);
+    const result = await compare(password, user.password);
     if (!result) return res.status(404).send("Incorrect password!");
 
-    const token = jwt.sign(
+    const token = sign(
       { username: req.body.username, id: user.id },
       process.env.SECRET_KEY
     );
@@ -58,4 +55,4 @@ auth.post("/login", validateLoginMiddleware, async (req, res) => {
   }
 });
 
-module.exports = auth;
+export default auth;

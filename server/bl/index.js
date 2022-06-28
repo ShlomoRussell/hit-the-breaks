@@ -1,12 +1,8 @@
-const getFollowerReports = require("./reports.bl");
-const { addUser, getUserByUsernameOrEmail } = require("./users.bl");
-const {
-  getAllVacations,
-  checkIfIsAdmin,
-  addVacation,
-} = require("./vacations.bl");
+import getFollowerReports from "./reports.bl.js";
+import { addUser, getUserByUsernameOrEmail } from "./users.bl.js";
+import { getAllVacations, checkIfIsAdmin, addVacation } from "./vacations.bl.js";
 
-module.exports = {
+export  {
   addUser,
   getUserByUsernameOrEmail,
   getAllVacations,

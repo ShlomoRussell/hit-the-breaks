@@ -1,3 +1,3 @@
-const UserModel =require("./user.model");
-const VacationModel= require('./vacation.model')
-module.exports = { UserModel, VacationModel };
+import UserModel from "./user.model.js";
+import VacationModel from "./vacation.model.js";
+export  { UserModel, VacationModel };

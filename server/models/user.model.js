@@ -7,7 +7,7 @@ class UserModel {
    * @param {string} firstName
    * @param {string} lastName
    */
-  constructor(email, username,  firstName, lastName,password, id) {
+  constructor( email, username,  firstName, lastName,password, id){
     this.email = email;
     this.username = username;
     this.firstName = firstName;
@@ -17,4 +17,4 @@ class UserModel {
   }
 }
 
-module.exports = UserModel;
+export default UserModel;
