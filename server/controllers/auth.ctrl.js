@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import { hash as _hash, compare } from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { getUserByUsernameOrEmail, addUser } from "../bl/index.js";
-import { validateRegisterMiddleware, validateLoginMiddleware } from "../middlewares/index.js";
+import {
+  validateRegisterMiddleware,
+  validateLoginMiddleware,
+} from "../middlewares/index.js";
 import dotenv from "dotenv";
 dotenv.config();
 const auth = Router();
@@ -11,7 +14,6 @@ const saltRounds = 10;
 
 auth.post("/register", validateRegisterMiddleware, async (req, res) => {
   const hash = await _hash(req.body.password, saltRounds);
-
   try {
     const newUser = await addUser({
       ...req.body,
@@ -21,7 +23,7 @@ auth.post("/register", validateRegisterMiddleware, async (req, res) => {
 
     if (newUser) {
       const token = jwt.sign(
-        { username: req.body.username, id: newUser.id },
+        { username: newUser.username, id: newUser.id },
         process.env.SECRET_KEY
       );
       res.status(201).json({ token, id: newUser.id });
@@ -41,16 +43,19 @@ auth.post("/login", validateLoginMiddleware, async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const user = await getUserByUsernameOrEmail({ username, email });
+    if (user === undefined)
+      throw new Error(`${username ? "username" : "email"} not found!`);
 
     const result = await compare(password, user.password);
     if (!result) return res.status(404).send("Incorrect password!");
 
-    const token = sign(
+    const token = jwt.sign(
       { username: req.body.username, id: user.id },
       process.env.SECRET_KEY
     );
     res.status(201).json({ id: user.id, token: token });
   } catch (error) {
+    console.log(error);
     return res.status(404).send(error.message);
   }
 });
