@@ -1,9 +1,20 @@
 import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import fileUpload from "express-fileupload";
+import { join } from "path";
 import { getAllVacations, addVacation } from "../bl/index.js";
-import { updateVacation, deleteVacation, followVacation, unFollowVacation } from "../dal/dal.js";
-import { isAdminMiddleware, validatedVacationMiddleware, isUserMiddleware } from "../middlewares/index.js";
+import {
+  updateVacation,
+  deleteVacation,
+  followVacation,
+  unFollowVacation,
+  getVacationFollowers,
+} from "../dal/dal.js";
+import {
+  isAdminMiddleware,
+  validatedVacationMiddleware,
+  isUserMiddleware,
+} from "../middlewares/index.js";
 const vacations = Router();
 vacations.use(
   fileUpload({
@@ -22,6 +33,17 @@ vacations.get("/", async (req, res) => {
 });
 
 vacations.use("/follow", isUserMiddleware);
+
+vacations.get("/follow/:vacationId", async (req, res) => {
+  const vacationId = req.params.vacationId;
+  try {
+    const followers = await getVacationFollowers(vacationId);
+    res.send(followers[0]);
+  } catch (error) {
+     console.log(error);
+    res.sendStatus(500);
+  }
+});
 
 vacations.post("/follow/:vacationId", async (req, res) => {
   const vacationId = req.params.vacationId;
@@ -66,7 +88,7 @@ vacations.post("/", async (req, res) => {
   if (req.files) {
     const uploadedfile = req.files.picture;
     newFileName = uuidv4() + "." + uploadedfile.name.split(".")[1];
-    const uploadPath = require.main.path + "/uploads/" + newFileName;
+    const uploadPath = join(process.cwd(), "/uploads/", newFileName);
 
     uploadedfile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
@@ -88,7 +110,7 @@ vacations.put("/:vacationId", async (req, res) => {
   if (req.files) {
     const uploadedfile = req.files.picture;
     newFileName = uuidv4() + "." + uploadedfile.name.split(".")[1];
-    const uploadPath = require.main.path + "/uploads/" + newFileName;
+    const uploadPath = join(process.cwd(), "/uploads/", newFileName);
 
     uploadedfile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);

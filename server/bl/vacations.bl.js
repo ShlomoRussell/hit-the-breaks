@@ -1,9 +1,13 @@
-import { dalGetAllVactaions, dalCheckIfisAdmin, dalAddVacation } from "../dal/dal.js";
+import {
+  dalGetAllVacations,
+  dalCheckIfisAdmin,
+  dalAddVacation,
+} from "../dal/dal.js";
 import { VacationModel } from "../models/index.js";
 
 async function getAllVacations() {
   try {
-    const vacations = await dalGetAllVactaions();
+    const vacations = await dalGetAllVacations();
     return vacations
       .filter((data) => Array.isArray(data))[0]
       .map((data) => new VacationModel(...Object.values(data)));
