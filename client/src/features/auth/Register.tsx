@@ -1,12 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Image } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "./authApiSlice";
 import { setCredentials } from "./authSlice";
 
 function Register() {
-  const userRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLDivElement>(null);
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState('')
@@ -34,18 +34,17 @@ function Register() {
     };
     try {
       const userData = await register(credentials).unwrap();
-      dispatch(setCredentials({ username, token: userData.token }));
+      dispatch(setCredentials(userData));
       navigate(from, { replace: true });
     } catch (error: any) {
-      if (!error?.response)
-        setErrMsg(data);
-      else setErrMsg(data);
+      if (!error?.originalStatus) setErrMsg("Having trouble connecting to server please try again!");
+      else setErrMsg(error.data);
       errRef.current?.focus();
     }
   };
 
   useEffect(() => {
-    userRef.current?.focus();
+    emailRef.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -63,8 +62,13 @@ function Register() {
           boxShadow: "10px 10px 10px #888888",
           borderRadius: "10px",
         }}
-        className="position-absolute top-50 start-50 translate-middle align-items-center p-4"
+        className="position-absolute top-50 start-50 translate-middle align-items-center p-4 pt-1 pb-5 w-25"
       >
+        <Image
+          className="mb-4 mx-auto d-block"
+          fluid
+          src="hit_the_breaks.png"
+        />
         {errMsg && (
           <Alert
             variant={"warning"}
@@ -79,6 +83,7 @@ function Register() {
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="email"
+              ref={emailRef}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter email"
             />
@@ -89,7 +94,6 @@ function Register() {
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
-              ref={userRef}
               onChange={(e) => setUsername(e.target.value)}
               type="text"
               placeholder="'John Doe'"
@@ -98,7 +102,6 @@ function Register() {
           <Form.Group className="mb-3" controlId="firstName">
             <Form.Label>First Name</Form.Label>
             <Form.Control
-              ref={userRef}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
               placeholder="'John'"
@@ -107,7 +110,6 @@ function Register() {
           <Form.Group className="mb-3" controlId="last name">
             <Form.Label>Last Name</Form.Label>
             <Form.Control
-              ref={userRef}
               onChange={(e) => setLastName(e.target.value)}
               type="text"
               placeholder="'Doe'"
@@ -130,8 +132,12 @@ function Register() {
             />
           </Form.Group>
           <Button
-            className="mx-auto my-4"
-            style={{ width: "85%", display: "block" }}
+            className="w-100 mt-4 border-0"
+            style={{
+              width: "85%",
+              display: "block",
+              backgroundColor: "#48b42c",
+            }}
             variant="primary"
             type="submit"
           >

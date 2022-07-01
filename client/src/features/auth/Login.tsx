@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Image } from "react-bootstrap";
 import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { setCredentials } from "./authSlice";
@@ -30,12 +30,14 @@ function Login() {
     };
     try {
       const userData = await login(credentials).unwrap();
-      dispatch(setCredentials({ user, token: userData.token }));
+      dispatch(setCredentials(userData));
+      console.log(userData)
       navigate(from, { replace: true });
     } catch (error: any) {
-      if (!error?.response)
+      console.log(error)
+      if (!error?.originalStatus)
         setErrMsg("Having trouble connecting to server please try again!");
-      else setErrMsg(data);
+      else setErrMsg(error.data);
       errRef.current?.focus();
     }
   };
@@ -59,8 +61,9 @@ function Login() {
           boxShadow: "10px 10px 10px #888888",
           borderRadius: "10px",
         }}
-        className="position-absolute top-50 start-50 translate-middle align-items-center p-4 w-25 "
+        className="position-absolute top-50 start-50 translate-middle align-items-center p-5 pt-1 w-25 "
       >
+        <Image className="mb-4 mx-auto d-block" fluid src="hit_the_breaks.png" />
         {errMsg ? (
           <Alert
             ref={errRef}
@@ -92,7 +95,12 @@ function Login() {
             />
           </Form.Group>
 
-          <Button className="w-100 " variant="primary" type="submit">
+          <Button
+            style={{ backgroundColor: "#48b42c" }}
+            className="w-100 border-0"
+            variant="primary"
+            type="submit"
+          >
             Login
           </Button>
 
