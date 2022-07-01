@@ -1,4 +1,4 @@
-import { dalGetUserByUsernameOrEmail, dalAddUser } from "../dal/dal.js";
+import { dalGetUserByUsernameOrEmail, dalAddUser, dalGetUserById } from "../dal/dal.js";
 import { UserModel } from "../models/index.js";
 
 async function getUserByUsernameOrEmail(payload) {
@@ -7,7 +7,19 @@ async function getUserByUsernameOrEmail(payload) {
       if (data.length === 0) throw new Error("Username not found!");
       return data.filter((d) => Array.isArray(d))[0].map((d) => ({ ...d }))[0];
     });
-    return data;
+   return new UserModel(...Object.values(data))
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function getUserById(payload) {
+  try {
+    const data = await dalGetUserById(payload).then((data) => {
+      if (data.length === 0) throw new Error("Username not found!");
+      return data.filter((d) => Array.isArray(d))[0].map((d) => ({ ...d }))[0];
+    });
+    return new UserModel(...Object.values(data));
   } catch (error) {
     throw new Error(error.message);
   }
@@ -23,4 +35,4 @@ async function addUser(payload) {
   }
 }
 
-export { getUserByUsernameOrEmail, addUser };
+export { getUserByUsernameOrEmail, addUser, getUserById };

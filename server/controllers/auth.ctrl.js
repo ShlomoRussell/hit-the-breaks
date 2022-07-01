@@ -6,11 +6,24 @@ import { getUserByUsernameOrEmail, addUser } from "../bl/index.js";
 import {
   validateRegisterMiddleware,
   validateLoginMiddleware,
+  jwtMiddleware,
 } from "../middlewares/index.js";
 import dotenv from "dotenv";
+import { getUserById } from "../bl/users.bl.js";
 dotenv.config();
 const auth = Router();
 const saltRounds = 10;
+
+auth.get("/user", jwtMiddleware, async (req, res) => {
+  const id = req.headers.id;
+  const token = req.headers.authorization.split(" ")[1];
+  try {
+    const user = await getUserById(id);
+    return res.send({ ...user, token });
+  } catch (error) {
+    return res.sendStatus(500);
+  }
+});
 
 auth.post("/register", validateRegisterMiddleware, async (req, res) => {
   const hash = await _hash(req.body.password, saltRounds);
@@ -26,7 +39,7 @@ auth.post("/register", validateRegisterMiddleware, async (req, res) => {
         { username: newUser.username, id: newUser.id },
         process.env.SECRET_KEY
       );
-      res.status(201).json({ token, id: newUser.id });
+      res.status(201).json({ token, ...newUser });
     }
   } catch (error) {
     if (error.message.split(" ")[1] === "Duplicate") {
@@ -53,7 +66,8 @@ auth.post("/login", validateLoginMiddleware, async (req, res) => {
       { username: req.body.username, id: user.id },
       process.env.SECRET_KEY
     );
-    res.status(201).json({ id: user.id, token: token });
+    console.log({ ...user, token });
+    res.status(201).json({ ...user, token: token });
   } catch (error) {
     console.log(error);
     return res.status(404).send(error.message);

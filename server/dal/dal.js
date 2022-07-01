@@ -15,10 +15,13 @@ const queryAsync = promisify(pool.query).bind(pool);
 const dalGetUserByUsernameOrEmail = async (payload) =>
   await queryAsync("CALL `SELECT_USER`(?);", payload.username || payload.email);
 
+const dalGetUserById = async (id) =>
+  await queryAsync("CALL `GET_USER_BY_ID`(?);", id);
+
 const dalAddUser = async (newUser) =>
   queryAsync("CALL `ADD_USER`(?, ?, ?, ?, ?, ?);", newUser);
 
-const dalGetAllVactaions = async () =>
+const dalGetAllVacations = async () =>
   await queryAsync("CALL GET_ALL_VACATIONS();");
 
 const dalCheckIfisAdmin = async (id) =>
@@ -46,12 +49,16 @@ const followVacation = async (ids) =>
 const unFollowVacation = async (ids) =>
   queryAsync("CALL `UNFOLLOW_VACATION`(?,?)", ids);
 
-const dalGetFollowerReports = async () => queryAsync("CALL `GET_FOLLOWER_REPORT`()");
+const dalGetFollowerReports = async () =>
+  queryAsync("CALL `GET_FOLLOWER_REPORT`()");
+
+const getVacationFollowers = async (vacationId) =>
+  queryAsync("CALL `GET_VACATION_FOLLOWERS`(?)", vacationId);
 
 export {
   dalGetUserByUsernameOrEmail,
   dalAddUser,
-  dalGetAllVactaions,
+  dalGetAllVacations,
   dalCheckIfisAdmin,
   dalAddVacation,
   updateVacation,
@@ -59,4 +66,6 @@ export {
   followVacation,
   unFollowVacation,
   dalGetFollowerReports,
+  getVacationFollowers,
+  dalGetUserById,
 };
