@@ -6,6 +6,7 @@ class VacationModel {
    * @param {Date} startDate
    * @param {Date} endDate
    * @param {number} price
+   * @param {number} following
    * @param {string | null} id
    */
   constructor(
@@ -15,7 +16,8 @@ class VacationModel {
     endDate,
     price,
     picture,
-    id
+    id,
+    following
   ) {
     this.description = description;
     this.destination = destination;
@@ -23,6 +25,7 @@ class VacationModel {
     this.startDate = startDate;
     this.endDate = endDate;
     this.price = price;
+    this.following = following;
     this.id = id;
   }
 }
