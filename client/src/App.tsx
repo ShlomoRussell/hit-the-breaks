@@ -3,6 +3,7 @@ import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
 import Home from "./components/Home";
 import { RequireAuth } from "./features/auth/RequireAuth";
+import { store } from "./app/store";
 
 function App() {
   return (
