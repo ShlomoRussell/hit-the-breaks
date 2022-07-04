@@ -30,8 +30,8 @@ auth.post("/register", validateRegisterMiddleware, async (req, res) => {
   try {
     const newUser = await addUser({
       ...req.body,
-      password: hash,
       id: uuidv4(),
+      password: hash,
     });
 
     if (newUser) {
@@ -39,6 +39,7 @@ auth.post("/register", validateRegisterMiddleware, async (req, res) => {
         { username: newUser.username, id: newUser.id },
         process.env.SECRET_KEY
       );
+      delete newUser.password;
       res.status(201).json({ token, ...newUser });
     }
   } catch (error) {
@@ -60,13 +61,14 @@ auth.post("/login", validateLoginMiddleware, async (req, res) => {
       throw new Error(`${username ? "username" : "email"} not found!`);
 
     const result = await compare(password, user.password);
+    console.log(user);
     if (!result) return res.status(404).send("Incorrect password!");
 
     const token = jwt.sign(
       { username: req.body.username, id: user.id },
       process.env.SECRET_KEY
     );
-    console.log({ ...user, token });
+    delete user.password;
     res.status(201).json({ ...user, token: token });
   } catch (error) {
     console.log(error);
