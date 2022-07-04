@@ -9,7 +9,7 @@ const authInitialState = () =>
     firstName: "",
     lastName: "",
     isAdmin: false,
-    token: JSON.parse(localStorage.getItem("hit-the-breaks-token")!) ,
+    token: JSON.parse(localStorage.getItem("hit-the-breaks-token")!)|| null ,
   };
 const authSlice = createSlice({
   name: "auth",
@@ -18,14 +18,14 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       return { ...state, ...action.payload };
     },
-    logOut: (state, action) => {
-      return;
+    logOut: (_state, _action) => {
+      return authInitialState()
     },
   },
 });
 
 export const authMiddleware =
-  (store: any) => (next: (arg0: any) => any) => (action: Action<unknown>) => {
+  (_store: any) => (next: (arg: any) => any) => (action: Action<unknown>) => {
     if (authSlice.actions.setCredentials.match(action)) {
       localStorage.setItem(
         "hit-the-breaks-token",
