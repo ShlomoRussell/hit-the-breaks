@@ -14,6 +14,7 @@ function VacationModal({
   const [isErr, setIsErr] = useState(false);
   return (
     <Modal
+      scrollable
       onHide={() => setShow(false)}
       show={show}
       size="lg"
@@ -39,13 +40,33 @@ function VacationModal({
 
         <p>{currentVacation.description}</p>
         <hr />
-        <div>
-          Begin: {new Date(currentVacation.startDate).toLocaleString()}
-          <br />
-          End: {new Date(currentVacation.endDate).toLocaleString()}
-          <AiTwotoneLike />
-          <AiTwotoneDislike />
+        <div className="d-flex justify-content-between">
+          <div>
+            <h5> Begin: </h5>
+            {new Date(currentVacation.startDate).toLocaleString()}
+          </div>
+          <div>
+            <h5>End:</h5> {new Date(currentVacation.endDate).toLocaleString()}
+          </div>
+          <div className="align-self-center">
+            <span
+              title="like"
+              onMouseEnter={(e) => (e.currentTarget.style.color = "blue")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+            >
+              <AiTwotoneLike style={{ width: "1.5rem", height: "1.5rem" }} />
+            </span>
+            <span
+              title="dislike"
+              onMouseEnter={(e) => (e.currentTarget.style.color = "blue")}
+              onMouseLeave={(e) => (e.currentTarget.style.color = "black")}
+            >
+              <AiTwotoneDislike style={{ width: "1.5rem", height: "1.5rem" }} />
+            </span>
+          </div>
         </div>
+        <hr />
+        <div>Comments:</div>
       </Modal.Body>
     </Modal>
   );
