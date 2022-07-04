@@ -13,7 +13,10 @@ const pool = createPool({
 const queryAsync = promisify(pool.query).bind(pool);
 
 const dalGetUserByUsernameOrEmail = async (payload) =>
-  await queryAsync("CALL `SELECT_USER`(?);", payload.username || payload.email);
+  await queryAsync(
+    "CALL `GET_USER_USERNAME_OR_EMAIL`(?);",
+    payload.username || payload.email
+  );
 
 const dalGetUserById = async (id) =>
   await queryAsync("CALL `GET_USER_BY_ID`(?);", id);
