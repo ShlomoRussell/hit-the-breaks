@@ -67,7 +67,7 @@ function Register() {
         <Image
           className="mb-4 mx-auto d-block"
           fluid
-          src="hit_the_breaks.png"
+          src="/hit_the_breaks.png"
         />
         {errMsg && (
           <Alert

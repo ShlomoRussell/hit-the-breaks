@@ -63,7 +63,7 @@ function Login() {
         }}
         className="position-absolute top-50 start-50 translate-middle align-items-center p-5 pt-1 w-25 "
       >
-        <Image className="mb-4 mx-auto d-block" fluid src="hit_the_breaks.png" />
+        <Image className="mb-4 mx-auto d-block" fluid src="/hit_the_breaks.png" />
         {errMsg ? (
           <Alert
             ref={errRef}
