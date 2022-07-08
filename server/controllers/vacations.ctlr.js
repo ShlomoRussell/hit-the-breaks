@@ -2,14 +2,14 @@ import { Router } from "express";
 import { v4 as uuidv4 } from "uuid";
 import fileUpload from "express-fileupload";
 import { join } from "path";
-import { getAllVacations, addVacation } from "../bl/index.js";
 import {
-  updateVacation,
+  getAllVacations,
+  addVacation,
   deleteVacation,
   followVacation,
-  unFollowVacation,
   getVacationFollowers,
-} from "../dal/dal.js";
+  unFollowVacation,
+} from "../bl/index.js";
 import {
   isAdminMiddleware,
   validatedVacationMiddleware,

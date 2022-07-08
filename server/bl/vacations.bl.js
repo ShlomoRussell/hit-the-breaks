@@ -1,13 +1,10 @@
-import {
-  dalGetAllVacations,
-  dalCheckIfisAdmin,
-  dalAddVacation,
-} from "../dal/dal.js";
+import runQuery from "../dal/dal.js";
 import { VacationModel } from "../models/index.js";
 
-async function getAllVacations() {
+export async function getAllVacations() {
+  const sql = "CALL GET_ALL_VACATIONS();";
   try {
-    const vacations = await dalGetAllVacations();
+    const vacations = await runQuery(sql);
     return vacations
       .filter((data) => Array.isArray(data))[0]
       .map((data) => new VacationModel(...Object.values(data)));
@@ -16,19 +13,74 @@ async function getAllVacations() {
   }
 }
 
-async function addVacation(payload) {
+export async function addVacation(payload) {
   const vacation = new VacationModel(...Object.values(payload));
+  const sql = "CALL `ADD_VACATION`(?, ?, ?, ?, ?, ?);";
   console.log(vacation);
   try {
-    dalAddVacation(Object.values(vacation));
+    await runQuery(sql, Object.values(vacation));
+    return true;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
-async function checkIfIsAdmin(id) {
+export async function updateVacation(update, id) {
+  const sql =  "UPDATE `vacations` SET " +
+        Object.keys(update)
+          .map((key) => `${key} = ?`)
+          .join(", ") +
+        " WHERE id = ?"
   try {
-    const res = await dalCheckIfisAdmin(id);
+    await runQuery(sql, [...Object.values(update), id]);
+    return true;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+export async function deleteVacation(id) {
+  const sql = "CALL `DELETE_VACATION`(?);";
+  try {
+    await runQuery(sql, id);
+    return true
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function followVacation(ids) {
+  const sql = "CALL`FOLLOW_VACATION`(?,?);"
+  try {
+    await runQuery(sql, ids);
+    return true;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+export async function unFollowVacation(ids) {
+  const sql ="CALL `UNFOLLOW_VACATION`(?,?)"
+  try {
+    await runQuery(sql, ids);
+    return true;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getVacationFollowers(vacationId) {
+  const sql = "CALL `GET_VACATION_FOLLOWERS`(?)"
+  try {
+   const followers= await runQuery(sql, vacationId);
+    return followers
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
+export async function checkIfIsAdmin(id) {
+  const sql = "CALL `CHECK_IF_IS_ADMIN`(?);";
+  try {
+    const res = await runQuery(sql, id);
     const isAdmin = res
       .filter((d) => Array.isArray(d))[0]
       .map((d) => d.isAdmin)[0];
@@ -38,9 +90,3 @@ async function checkIfIsAdmin(id) {
     throw new Error(error.message);
   }
 }
-
-export  {
-  getAllVacations,
-  addVacation,
-  checkIfIsAdmin,
-};
