@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../app/hooks";
-import { store } from "../app/store";
-
-import usersVacationsApi, {
-  useGetAllVacationsQuery,
-} from "../features/vacations/userVacationsApiSlice";
-import { Vacations } from "../features/vacations/vacations.interface";
+import { useGetAllVacationsQuery } from "../features/vacations/userVacationsApiSlice";
 import VacationsList from "../features/vacations/VacationsList";
 import Header from "./Header";
 
 function Home() {
   const { isLoading } = useGetAllVacationsQuery([]);
   return (
-    <div style={{ backgroundColor: "#f0f2f5" }}>
+    <div className="h-100 " style={{ backgroundColor: "#f0f2f5" }}>
       <Header />
       {isLoading ? (
         <div className="position-relative vh-100">
