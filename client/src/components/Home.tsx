@@ -1,27 +1,12 @@
-import { Spinner } from "react-bootstrap";
-import { useGetAllVacationsQuery } from "../features/vacations/userVacationsApiSlice";
-import VacationsList from "../features/vacations/VacationsList";
-import Header from "./Header";
+import { Image } from "react-bootstrap";
+
 
 function Home() {
-  const { isLoading } = useGetAllVacationsQuery([]);
-  return (
-    <div className="h-100 " style={{ backgroundColor: "#f0f2f5" }}>
-      <Header />
-      {isLoading ? (
-        <div className="position-relative vh-100">
-          <Spinner
-            animation="border"
-            className="position-absolute top-50 start-50 translate-middle"
-            role="status"
-            variant="info"
-          >
-            <span className="visually-hidden">Loading...</span>
-          </Spinner>
-        </div>
-      ) : (
-        <VacationsList />
-      )}
+  
+  return  (
+    <div className="text-center">
+      <h1 className="fw-bold fs-1 m-5">Welcome to Hit the Breaks</h1>
+      <Image src="/hit_the_breaks.png" rounded alt="site logo" />
     </div>
   );
 }
