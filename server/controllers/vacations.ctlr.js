@@ -9,6 +9,7 @@ import {
   followVacation,
   getVacationFollowers,
   unFollowVacation,
+  updateVacation,
 } from "../bl/index.js";
 import {
   isAdminMiddleware,
