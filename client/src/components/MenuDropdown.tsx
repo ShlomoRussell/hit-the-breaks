@@ -36,7 +36,7 @@ function MenuDropdown() {
         <Dropdown.Item eventKey="1">Profile</Dropdown.Item>
         <Dropdown.Item eventKey="2">My Vacations</Dropdown.Item>
         <Dropdown.Item eventKey="3">Orange</Dropdown.Item>
-        <Dropdown.Item eventKey="4" onClick={handleLogOut}>
+        <Dropdown.Item eventKey="4" title="Log out" onClick={handleLogOut}>
           Log out
         </Dropdown.Item>
       </Dropdown.Menu>

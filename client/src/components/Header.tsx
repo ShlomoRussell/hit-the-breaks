@@ -10,12 +10,13 @@ function Header(): JSX.Element {
     <Navbar sticky="top" style={{ backgroundColor: "#1a63a1" }}>
       <Container fluid>
         <Navbar.Brand to={"/"} as={Link}>
-          <div>
+          <div style={{height:'4rem',width:"4rem"}}>
             <Image
-              src="/logo7.png"
+              src="/logo.png"
+              alt="logo"
               roundedCircle
               style={{
-                objectFit: "scale-down",
+                objectFit: "contain",
                 maxWidth: "100%",
                 height: "auto",
               }}
@@ -23,14 +24,14 @@ function Header(): JSX.Element {
           </div>
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link style={{ color: "whitesmoke" }} to={"/"} as={Link}>
+          <Nav.Link  style={{ color: "whitesmoke" }} to={"/"} as={Link}>
             Home
           </Nav.Link>
-          <Nav.Link style={{ color: "whitesmoke" }} to={""} as={Link}>
+          <Nav.Link style={{ color: "whitesmoke" }} to={"/vacations"} as={Link}>
             Vacations
           </Nav.Link>
           {isAdmin && (
-            <Nav.Link style={{ color: "whitesmoke" }} to={""} as={Link}>
+            <Nav.Link style={{ color: "whitesmoke" }} to={"/reports"} as={Link}>
               Reports
             </Nav.Link>
           )}
