@@ -1,42 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col } from "react-bootstrap";
-import {
-  Link,
-  Outlet,
-  Route,
-  Routes,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import VacationModal from "./VacationModal";
+import { Link, Outlet, useOutletContext } from "react-router-dom";
 import { Vacations } from "./vacations.interface";
 import history from "history/browser";
 
-function Vacation({ currentVacation }: { currentVacation: Vacations }) {
+type ModalOutletContextType = {
+  modalShow: boolean;
+  setModalShow: React.Dispatch<React.SetStateAction<boolean>>;
+  currentVacation: Vacations;
+};
+
+export default function Vacation({
+  currentVacation,
+}: {
+  currentVacation: Vacations;
+}) {
   const [isErr, setIsErr] = useState(false);
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
     const unlisten = history.listen(({ action, location }) => {
-      if (action == "POP" && location.pathname == `/${currentVacation.id}`) {
+      if (action == "POP" && location.pathname == `/vacations/${currentVacation.id}`) {
         setModalShow(true);
       }
     });
-    if (history.location.pathname == `/${currentVacation.id}`) {
+    if (history.location.pathname == `/vacations/${currentVacation.id}`) {
       setModalShow(true);
     }
     return () => unlisten();
   }, [history, setModalShow]);
   return (
     <>
+      <Outlet context={{ modalShow, setModalShow, currentVacation }} />
       <Col>
-        <Card
-        /*  style={{
-            backgroundColor: "white",
-            boxShadow: "10px 10px 10px #888888",
-            borderRadius: "10px",
-          }} */
-        >
+        <Card>
           <Link
             title={currentVacation.destination}
             onClick={() => setModalShow(true)}
@@ -49,7 +46,7 @@ function Vacation({ currentVacation }: { currentVacation: Vacations }) {
               src={
                 isErr || !currentVacation.picture
                   ? "/placeholder-image.png"
-                  : `/${currentVacation.picture}`
+                  : `/images/${currentVacation.picture}`
               }
             />
             <Card.Body>
@@ -59,20 +56,10 @@ function Vacation({ currentVacation }: { currentVacation: Vacations }) {
           </Link>
         </Card>
       </Col>
-      <Routes>
-        <Route
-          path="/:vacation"
-          element={
-            <VacationModal
-              show={modalShow}
-              setShow={setModalShow}
-              currentVacation={currentVacation}
-            />
-          }
-        />
-      </Routes>
     </>
   );
 }
 
-export default Vacation;
+export function useModalOutletContext() {
+  return useOutletContext<ModalOutletContextType>();
+}
