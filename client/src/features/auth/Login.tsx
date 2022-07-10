@@ -11,7 +11,7 @@ function Login() {
   const errRef = useRef<HTMLDivElement>(null);
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
-  const [login, { data }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState("");
   const dispatch = useAppDispatch();
@@ -52,7 +52,6 @@ function Login() {
   if (token) return <Navigate to="/" state={{ from: location }} replace />;
   return (
     <div
-      style={{ backgroundColor: "#f0f2f5" }}
       className="position-relative vh-100 vw-100"
     >
       <div

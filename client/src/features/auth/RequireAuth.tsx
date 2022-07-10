@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentToken, selectCurrentUserId } from "./authSlice";
 import usersVacationsApi from "../vacations/userVacationsApiSlice";
@@ -6,7 +6,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { authApiSlice } from "./authApiSlice";
 import { useEffect } from "react";
 
-export function RequireAuth({ children }: { children: JSX.Element }) {
+export function RequireAuth() {
   let location = useLocation();
   const dispatch = useAppDispatch();
   const token = useSelector(selectCurrentToken);
@@ -20,7 +20,7 @@ export function RequireAuth({ children }: { children: JSX.Element }) {
   }, []);
 
   return token ? (
-    children
+    <Outlet/>
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );

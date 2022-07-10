@@ -53,7 +53,6 @@ function Register() {
 
   return (
     <div
-      style={{ backgroundColor: "#f0f2f5" }}
       className="position-relative vh-100 vw-100"
     >
       <div
