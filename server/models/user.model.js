@@ -8,7 +8,7 @@ class UserModel {
    * @param {string} lastName
    * @param {boolean} isAdmin
    */
-  constructor(email, username, firstName, lastName, id, isAdmin, password) {
+  constructor(email, username, firstName, lastName, password, id, isAdmin) {
     this.email = email;
     this.username = username;
     this.firstName = firstName;
