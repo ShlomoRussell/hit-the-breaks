@@ -53,7 +53,7 @@ function FollowersAccordion({
       ) : (
         <Accordion className="mt-2">
           <CustomToggle eventKey="0">
-            <strong> {`${followers.length} following`}</strong>
+            <strong> {`${followers?followers.length:0} following`}</strong>
           </CustomToggle>
 
           <Accordion.Collapse eventKey="0">
