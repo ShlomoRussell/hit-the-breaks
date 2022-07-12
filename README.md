@@ -6,7 +6,8 @@
 
 <https://hit-the-breaks.herokuapp.com>
 
-![hit the breaks gifs](https://github.com/ShlomoRussell/hit-the-breaks/blob/master/Hit_the_Breaks.gif)
+<img src="https://github.com/ShlomoRussell/hit-the-breaks/blob/master/Hit_the_Breaks.gif" alt="hit the breaks gifs" width="250" height="250">
+
 
 ### Built with:
 
