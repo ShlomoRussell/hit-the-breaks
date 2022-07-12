@@ -15,12 +15,12 @@ function Register() {
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [register, { data }] = useRegisterMutation();
+  const [register] = useRegisterMutation();
   let navigate = useNavigate();
   let location = useLocation();
   const dispatch = useDispatch();
   let from = (location.state as any)?.from?.pathname || "/";
-
+const isMobile=window.innerWidth< 800
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -52,97 +52,97 @@ function Register() {
   }, [username, password]);
 
   return (
-    <div
-      className="position-relative vh-100 vw-100"
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          boxShadow: "10px 10px 10px #888888",
-          borderRadius: "10px",
-        }}
-        className="position-absolute top-50 start-50 translate-middle align-items-center p-4 pt-1 pb-5 w-25"
-      >
-        <Image
-          className="mb-4 mx-auto d-block"
-          fluid
-          src="/hit_the_breaks.png"
-        />
-        {errMsg && (
-          <Alert
-            variant={"warning"}
-            ref={errRef}
-            style={{ textTransform: "capitalize" }}
-          >
-            {errMsg}
-          </Alert>
-        )}
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              ref={emailRef}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email"
-            />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="username">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              onChange={(e) => setUsername(e.target.value)}
-              type="text"
-              placeholder="'John Doe'"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="firstName">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control
-              onChange={(e) => setFirstName(e.target.value)}
-              type="text"
-              placeholder="'John'"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="last name">
-            <Form.Label>Last Name</Form.Label>
-            <Form.Control
-              onChange={(e) => setLastName(e.target.value)}
-              type="text"
-              placeholder="'Doe'"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="Password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              type="password"
-              placeholder="Confirm Password"
-            />
-          </Form.Group>
-          <Button
-            className="w-100 mt-4 border-0"
-            style={{
-              width: "85%",
-              display: "block",
-              backgroundColor: "#48b42c",
-            }}
-            variant="primary"
-            type="submit"
-          >
-            Sign Up
-          </Button>
-        </Form>
+    <div className="container ">
+      <div className="row vh-100 align-items-center">
+        <div
+          style={{
+            backgroundColor: "white",
+            boxShadow: "10px 10px 10px #888888",
+            borderRadius: "10px",
+          }}
+          className="mx-auto p-5 pt-1 col-sm-4"
+        >
+          <Image
+            className="mb-4 mx-auto d-block"
+            fluid
+            src="/hit_the_breaks.png"
+          />
+          {errMsg && (
+            <Alert
+              variant={"warning"}
+              ref={errRef}
+              style={{ textTransform: "capitalize" }}
+            >
+              {errMsg}
+            </Alert>
+          )}
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                ref={emailRef}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
+              />
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                onChange={(e) => setUsername(e.target.value)}
+                type="text"
+                placeholder="'John Doe'"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="firstName">
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                onChange={(e) => setFirstName(e.target.value)}
+                type="text"
+                placeholder="'John'"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="last name">
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                onChange={(e) => setLastName(e.target.value)}
+                type="text"
+                placeholder="'Doe'"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="Password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                placeholder="Password"
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="confirmPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                type="password"
+                placeholder="Confirm Password"
+              />
+            </Form.Group>
+            <Button
+              className="w-100 mt-4 border-0"
+              style={{
+                width: "85%",
+                display: "block",
+                backgroundColor: "#48b42c",
+              }}
+              variant="primary"
+              type="submit"
+            >
+              Sign Up
+            </Button>
+          </Form>
+        </div>
       </div>
     </div>
   );
