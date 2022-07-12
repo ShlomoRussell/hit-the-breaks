@@ -14,6 +14,7 @@ export const usersVacationsApi = apiSlice.injectEndpoints({
           console.log(error);
         }
       },
+      providesTags:["VACATIONS"]
     }),
     getVacationFollowers: builder.query({
       query: (vacationsId: string) => ({
