@@ -4,7 +4,7 @@
 ## A fullstack app 
 - Watch and follow the vacations you dream of.
 
-<https://hit-the-breaks.herokuapp.com>
+[View live here](https://hit-the-breaks.herokuapp.com)
 
 
 ![hit the breaks gifs](https://github.com/ShlomoRussell/hit-the-breaks/blob/master/Hit-the-Breaks2.gif)
