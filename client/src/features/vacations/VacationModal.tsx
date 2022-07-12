@@ -10,6 +10,7 @@ import FollowersAccordion from "./FollowersAccordion";
 import { useSelector } from "react-redux";
 import { selectIsAdmin } from "../auth/authSlice";
 import { useModalOutletContext } from "./Vacation";
+import { useDeleteVacationMutation } from "./adminVacationsApiSlice";
 
 function VacationModal(): JSX.Element {
   const [isErr, setIsErr] = useState(false);
@@ -19,7 +20,7 @@ function VacationModal(): JSX.Element {
   const { modalShow, setModalShow, currentVacation } = useModalOutletContext()
   const [follow] = useFollowMutation();
   const [unFollow] = useUnFollowMutation();
-
+const[deleteVacation] = useDeleteVacationMutation()
   const handleFollow = async (e: React.MouseEvent<HTMLButtonElement>) => {
     try {
       if (isFollowed) {
@@ -29,7 +30,10 @@ function VacationModal(): JSX.Element {
       console.log(error);
     }
   };
-
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    deleteVacation(currentVacation.id)
+    navigate('/vacations',{replace:true})
+   }
   useEffect(() => {
     const unlisten = history.listen(({ action, location }) => {
       if (action ===  "POP" && location.pathname === "/vacations") {
@@ -40,6 +44,7 @@ function VacationModal(): JSX.Element {
   }, [ setModalShow]);
   return (
     <Modal
+      size="xl"
       scrollable
       onHide={() => {
         navigate(-1);
@@ -55,26 +60,41 @@ function VacationModal(): JSX.Element {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image
-          onError={() => setIsErr(true)}
-          fluid
-          src={
-            isErr || !currentVacation.picture
-              ? "/placeholder-image.png"
-              : `/images/${currentVacation.picture}`
-          }
-          alt={`picture of ${currentVacation.destination}`}
-        />
+        <div>
+          {" "}
+          <Image
+            onError={() => setIsErr(true)}
+            fluid
+            className="w-100 mb-3"
+            src={
+              isErr || !currentVacation.picture
+                ? "/placeholder-image.png"
+                : `/images/${currentVacation.picture}`
+            }
+            alt={`picture of ${currentVacation.destination}`}
+          />
+        </div>
         {isAdmin ? (
-          <Link to={`/vacations/edit/${currentVacation.id}`}>
+          <>
+            {" "}
             <Button
               size="sm"
               style={{ backgroundColor: "#48b42c" }}
               className="float-end m-1 border-0"
+              onClick={handleDelete}
             >
-              Edit
+              Delete
             </Button>
-          </Link>
+            <Link to={`/vacations/edit/${currentVacation.id}`}>
+              <Button
+                size="sm"
+                style={{ backgroundColor: "#48b42c" }}
+                className="float-end m-1 border-0"
+              >
+                Edit
+              </Button>
+            </Link>
+          </>
         ) : (
           <Button
             size="sm"
@@ -85,9 +105,7 @@ function VacationModal(): JSX.Element {
             {isFollowed ? "Unfollow" : "Follow"}
           </Button>
         )}
-        <p className="m-1">
-          {currentVacation.description}
-        </p>
+        <p className="m-1">{currentVacation.description}</p>
         <hr />
         <div className="d-flex justify-content-between">
           <div>

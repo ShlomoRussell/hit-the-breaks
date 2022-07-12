@@ -51,7 +51,7 @@ export default function Vacation({
             />
             <Card.Body>
               <Card.Title>{currentVacation.destination}</Card.Title>
-              <Card.Text>{currentVacation.description}</Card.Text>
+     
             </Card.Body>
           </Link>
         </Card>
