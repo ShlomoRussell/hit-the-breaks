@@ -21,9 +21,10 @@
 #### Server
 - NodeJs
 - Express
-- MySql
 - Bcrypt
 - jsonwebtokens
 - express-fileupload
 
 
+#### Database
+- MySql
