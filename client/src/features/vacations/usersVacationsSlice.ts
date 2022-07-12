@@ -8,7 +8,7 @@ const usersVacationsSlice = createSlice({
   initialState: usersVacationsSliceInitVal,
   reducers: {
     setAllVacations: (state, action) => {
-      return [...state, ...action.payload];
+      return [ ...action.payload];
     },
   },
 });

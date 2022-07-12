@@ -1,7 +1,6 @@
 import {  Route, Routes } from "react-router-dom";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
-import Home from "./components/Home";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import EditOrAddVacation from "./features/vacations/EditOrAddVacation";
 import "./App.css";
