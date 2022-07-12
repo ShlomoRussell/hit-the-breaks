@@ -1,12 +1,13 @@
 import { createPool } from "mysql";
 import { promisify } from "util";
-
+import { config } from "dotenv";
+config()
 const pool = createPool({
   connectionLimit: 100, //important
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "hit_the_breaks",
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD||"",
+  database: process.env.DATABASE_NAME,
   debug: false,
 });
 
