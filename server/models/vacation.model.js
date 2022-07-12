@@ -10,8 +10,8 @@ class VacationModel {
    * @param {string | null} id
    */
   constructor(
-    description,
     destination,
+    description,
     startDate,
     endDate,
     price,
