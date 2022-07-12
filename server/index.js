@@ -8,14 +8,14 @@ const app = express();
 app.use(urlencoded({ extended: true }));
 app.use(json());
 
-app.use(express.static("static"));
+app.use(express.static("public"));
 app.use('/images',express.static('uploads'))
 app.use("/auth", authRouter);
-app.use(jwtMiddleware);
+app.use('/api/',jwtMiddleware);
 app.use("/api/vacations", vacationsRouter);
 app.use("/api/reports", reportsRouter);
 app.get("*", function (req, res) {
-  res.sendFile(path.join(process.cwd(), "/static/index.html"));
+  res.sendFile(path.join(process.cwd(), "/public/index.html"));
 });
 
 app.listen(process.env.PORT, () =>
