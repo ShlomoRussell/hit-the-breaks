@@ -1,4 +1,6 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import { getSocket } from "../../services/socket/socket.io.service";
+import { SocketEvents } from "../../services/socket/socketEvents.enum";
 
 const adminVacationsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,6 +10,10 @@ const adminVacationsApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: vacation,
       }),
+      async onQueryStarted() {
+        const socket = getSocket();
+        socket.emit(SocketEvents.updatedVacations);
+      },
       invalidatesTags: ["VACATIONS"],
     }),
     editVacation: builder.mutation({
@@ -16,17 +22,28 @@ const adminVacationsApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: vacation,
       }),
+      async onQueryStarted() {
+        const socket = getSocket();
+        socket.emit(SocketEvents.updatedVacations);
+      },
     }),
     deleteVacation: builder.mutation({
       query: (id: string) => ({
         url: `api/vacations/${id}`,
         method: "DELETE",
       }),
+      async onQueryStarted() {
+        const socket = getSocket();
+        socket.emit(SocketEvents.updatedVacations);
+      },
       invalidatesTags: ["VACATIONS"],
     }),
   }),
 });
 
-export const { useAddVacationsMutation, useEditVacationMutation,useDeleteVacationMutation } =
-  adminVacationsApiSlice;
+export const {
+  useAddVacationsMutation,
+  useEditVacationMutation,
+  useDeleteVacationMutation,
+} = adminVacationsApiSlice;
 export default adminVacationsApiSlice;
