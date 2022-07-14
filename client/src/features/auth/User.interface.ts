@@ -1,9 +1,9 @@
 export interface UserModel {
-  id: string;
-  email: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-    isAdmin: boolean;
-    token:string | null
+  id: string | null;
+  email: string | null;
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  isAdmin: boolean | null;
+  token: string | null;
 }

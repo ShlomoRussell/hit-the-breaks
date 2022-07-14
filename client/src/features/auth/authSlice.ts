@@ -1,16 +1,16 @@
 import { Action, createSlice } from "@reduxjs/toolkit";
 import { UserModel } from "./User.interface";
 
-const authInitialState = () =>
-  <UserModel>{
-    id: "",
-    email: "",
-    username: "",
-    firstName: "",
-    lastName: "",
-    isAdmin: false,
-    token: JSON.parse(localStorage.getItem("hit-the-breaks-token")!)|| null ,
-  };
+const authInitialState = (): UserModel => ({
+  id: null,
+  email: null,
+  username: null,
+  firstName: null,
+  lastName: null,
+  isAdmin: false,
+  token: JSON.parse(localStorage.getItem("hit-the-breaks-token")!) || null,
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: authInitialState(),
@@ -36,6 +36,7 @@ export const authMiddleware =
     }
     return next(action);
   };
+
 export const { setCredentials, logOut } = authSlice.actions;
 export default authSlice.reducer;
 export const selectCurrentUser = (state: { auth: UserModel }) =>
