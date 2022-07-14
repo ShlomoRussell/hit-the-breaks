@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { usersVacationsApi } from "./userVacationsApiSlice";
 import { Vacations } from "./vacations.interface";
 
 const usersVacationsSliceInitVal: Vacations[] = [];
