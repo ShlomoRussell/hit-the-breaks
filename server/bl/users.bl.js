@@ -6,7 +6,8 @@ const sql = "CALL `GET_USER_USERNAME_OR_EMAIL`(?);";
   try {
     const data = await runQuery(sql, payload.username || payload.email).then(
       (data) => {
-        if (data.length === 0) throw new Error("Username not found!");
+        console.log(data)
+        if (data[0].length === 0) throw new Error("Username not found!");
         return data
           .filter((d) => Array.isArray(d))[0]
           .map((d) => ({ ...d }))[0];
