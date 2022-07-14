@@ -65,7 +65,7 @@ const isMobile = window.innerWidth < 800;
           <Image
             className="mb-4 mx-auto d-block"
             fluid
-            src="/hit_the_breaks.png"
+            src="/images/hit_the_breaks.png"
           />
           {errMsg ? (
             <Alert

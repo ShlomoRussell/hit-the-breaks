@@ -45,7 +45,7 @@ export default function Vacation({
               onError={(e) => setIsErr(true)}
               src={
                 isErr || !currentVacation.picture
-                  ? "/placeholder-image.png"
+                  ? "/images/placeholder-image.png"
                   : `/images/${currentVacation.picture}`
               }
             />

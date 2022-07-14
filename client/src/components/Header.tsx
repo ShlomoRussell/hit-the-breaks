@@ -9,7 +9,7 @@ function Header(): JSX.Element {
         <Navbar.Brand to={"/"} as={Link}>
           <div style={{ height: "4rem", width: "4rem" }}>
             <Image
-              src="/logo.png"
+              src="/images/logo.png"
               alt="logo"
               roundedCircle
               style={{

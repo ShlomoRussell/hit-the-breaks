@@ -68,7 +68,7 @@ const[deleteVacation] = useDeleteVacationMutation()
             className="w-100 mb-3"
             src={
               isErr || !currentVacation.picture
-                ? "/placeholder-image.png"
+                ? "/images/placeholder-image.png"
                 : `/images/${currentVacation.picture}`
             }
             alt={`picture of ${currentVacation.destination}`}

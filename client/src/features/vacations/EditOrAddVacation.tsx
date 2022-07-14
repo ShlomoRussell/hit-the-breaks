@@ -57,7 +57,7 @@ const isMobile = window.innerWidth < 800;
           }}
           className="mx-auto p-5 pt-1 col-sm-4"
         >
-      <Image className="mb-4 mx-auto d-block" fluid src="/hit_the_breaks.png" />
+      <Image className="mb-4 mx-auto d-block" fluid src="/images/hit_the_breaks.png" />
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="destination">
           <Form.Label>
