@@ -9,6 +9,7 @@ import VacationsList from "./features/vacations/VacationsList";
 import VacationModal from "./features/vacations/VacationModal";
 import NotFound from "./components/NotFound";
 import Layout from "./components/Layout";
+
 function App() {
   return (
     <Routes>

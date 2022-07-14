@@ -1,6 +1,6 @@
-const { createProxyMiddleware } = require("http-proxy-middleware");
+import { createProxyMiddleware, RequestHandler } from "http-proxy-middleware";
 
-module.exports = function (app) {
+export default function (app: { use: (arg0: string[], arg1: RequestHandler) => void; }): void {
   app.use(
     ["/api", "auth", "/images", "/socket.io", "/sockjs-node/"],
     createProxyMiddleware({
