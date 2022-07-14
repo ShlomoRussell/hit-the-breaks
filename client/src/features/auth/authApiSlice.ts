@@ -1,10 +1,11 @@
 import { apiSlice } from "../../app/api/apiSlice";
 import authSlice, { setCredentials } from "./authSlice";
+import { UserModel } from "./User.interface";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     onRefresh: builder.query({
-      query: () => "auth/user",
+      query: () => "auth/user/refresh",
       async onQueryStarted(_arg: any, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
