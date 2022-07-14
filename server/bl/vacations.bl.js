@@ -1,6 +1,7 @@
 import runQuery from "../dal/dal.js";
 import { VacationModel } from "../models/index.js";
-
+import { unlinkSync } from "fs";
+import path from "path";
 export async function getAllVacations() {
   const sql = "CALL GET_ALL_VACATIONS();";
   try {
@@ -26,11 +27,12 @@ export async function addVacation(payload) {
 }
 
 export async function updateVacation(update, id) {
-  const sql =  "UPDATE `vacations` SET " +
-        Object.keys(update)
-          .map((key) => `${key} = ?`)
-          .join(", ") +
-        " WHERE id = ?"
+  const sql =
+    "UPDATE `vacations` SET " +
+    Object.keys(update)
+      .map((key) => `${key} = ?`)
+      .join(", ") +
+    " WHERE id = ?";
   try {
     await runQuery(sql, [...Object.values(update), id]);
     return true;
@@ -41,15 +43,18 @@ export async function updateVacation(update, id) {
 export async function deleteVacation(id) {
   const sql = "CALL `DELETE_VACATION`(?);";
   try {
-    await runQuery(sql, id);
-    return true
+    const res = await runQuery(sql, id);
+    const parsedRes = res.filter((p) => Array.isArray(p))[0];
+    const vacationPicFileName = Object.assign({}, ...parsedRes).picture;
+    unlinkSync(path.join(process.cwd(), "uploads", vacationPicFileName));
+    return vacationPic;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
 export async function followVacation(ids) {
-  const sql = "CALL`FOLLOW_VACATION`(?,?);"
+  const sql = "CALL`FOLLOW_VACATION`(?,?);";
   try {
     await runQuery(sql, ids);
     return true;
@@ -58,7 +63,7 @@ export async function followVacation(ids) {
   }
 }
 export async function unFollowVacation(ids) {
-  const sql ="CALL `UNFOLLOW_VACATION`(?,?)"
+  const sql = "CALL `UNFOLLOW_VACATION`(?,?)";
   try {
     await runQuery(sql, ids);
     return true;
@@ -68,12 +73,12 @@ export async function unFollowVacation(ids) {
 }
 
 export async function getVacationFollowers(vacationId) {
-  const sql = "CALL `GET_VACATION_FOLLOWERS`(?)"
+  const sql = "CALL `GET_VACATION_FOLLOWERS`(?)";
   try {
-   const followers= await runQuery(sql, vacationId);
-    return followers
+    const followers = await runQuery(sql, vacationId);
+    return followers;
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(error.message);
   }
 }
 
