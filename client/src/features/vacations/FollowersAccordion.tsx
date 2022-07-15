@@ -1,6 +1,7 @@
 import { Key, useEffect } from "react";
 import { useAccordionButton, Accordion, Spinner } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../app/hooks";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useGetVacationFollowersQuery } from "./userVacationsApiSlice";
 
@@ -34,6 +35,7 @@ function FollowersAccordion({
 }): JSX.Element {
   const { data: followers, isLoading } = useGetVacationFollowersQuery(id);
   const username = useSelector(selectCurrentUser);
+
   useEffect(() => {
     if (
       followers &&
@@ -42,6 +44,7 @@ function FollowersAccordion({
       setIsFollowed(true);
     } else setIsFollowed(false);
   }, [setIsFollowed, followers]);
+
   return (
     <>
       {isLoading ? (
@@ -53,7 +56,7 @@ function FollowersAccordion({
       ) : (
         <Accordion className="mt-2">
           <CustomToggle eventKey="0">
-            <strong> {`${followers?followers.length:0} following`}</strong>
+            <strong> {`${followers ? followers.length : 0} following`}</strong>
           </CustomToggle>
 
           <Accordion.Collapse eventKey="0">

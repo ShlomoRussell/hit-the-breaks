@@ -12,7 +12,7 @@ const adminVacationsApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted() {
         const socket = getSocket();
-        socket.emit(SocketEvents.updatedVacations);
+        socket.emit(SocketEvents.vacationsUpdated);
       },
       invalidatesTags: ["VACATIONS"],
     }),
@@ -24,7 +24,7 @@ const adminVacationsApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted() {
         const socket = getSocket();
-        socket.emit(SocketEvents.updatedVacations);
+        socket.emit(SocketEvents.vacationsUpdated);
       },
     }),
     deleteVacation: builder.mutation({
@@ -34,7 +34,7 @@ const adminVacationsApiSlice = apiSlice.injectEndpoints({
       }),
       async onQueryStarted() {
         const socket = getSocket();
-        socket.emit(SocketEvents.updatedVacations);
+        socket.emit(SocketEvents.vacationsUpdated);
       },
       invalidatesTags: ["VACATIONS"],
     }),

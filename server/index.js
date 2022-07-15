@@ -9,7 +9,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import path from "path";
 import dotenv from "dotenv";
-import { socketHandler } from "./socket/adminSocket.js";
+import { socketHandler } from "./socket/socketHandler.js";
 dotenv.config();
 const app = express();
 const server = createServer(app);

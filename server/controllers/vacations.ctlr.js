@@ -39,6 +39,7 @@ vacations.get("/follow/:vacationId", async (req, res) => {
   const vacationId = req.params.vacationId;
   try {
     const followers = await getVacationFollowers(vacationId);
+    console.log(followers)
     res.send(followers[0]);
   } catch (error) {
      console.log(error);

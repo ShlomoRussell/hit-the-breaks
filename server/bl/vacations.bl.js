@@ -63,6 +63,7 @@ export async function followVacation(ids) {
   }
 }
 export async function unFollowVacation(ids) {
+  console.log(ids)
   const sql = "CALL `UNFOLLOW_VACATION`(?,?)";
   try {
     await runQuery(sql, ids);
@@ -76,6 +77,7 @@ export async function getVacationFollowers(vacationId) {
   const sql = "CALL `GET_VACATION_FOLLOWERS`(?)";
   try {
     const followers = await runQuery(sql, vacationId);
+    console.log(followers)
     return followers;
   } catch (error) {
     throw new Error(error.message);
