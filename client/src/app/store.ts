@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import authSlice, { authMiddleware } from "../features/auth/authSlice";
 import usersVacationsSlice from "../features/vacations/usersVacationsSlice";
+import updateSlice from "../services/socket/updateSlice";
 import { apiSlice } from "./api/apiSlice";
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice,
     usersVacations: usersVacationsSlice,
+    updates:updateSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware, authMiddleware),
