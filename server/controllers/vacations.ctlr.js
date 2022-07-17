@@ -89,7 +89,10 @@ vacations.post("/", async (req, res) => {
   let newFileName;
   if (req.files) {
     const uploadedfile = req.files.picture;
-    newFileName = uuidv4() + "." + uploadedfile.name.split(".")[1];
+    const originalFileExtension = uploadedfile.name.split(".")[1];
+    const fileExtension =
+      originalFileExtension == "jfif" ? "jpeg" : originalFileExtension;
+    newFileName = uuidv4() + "." + fileExtension;
     const uploadPath = join(process.cwd(), "/uploads/", newFileName);
 
     uploadedfile.mv(uploadPath, function (err) {
