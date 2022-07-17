@@ -1,5 +1,10 @@
 import Joi from "joi";
-
+import express from "express";
+/**
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 function validateRegisterMiddleware(req, res, next) {
   const registerSchema = Joi.object({
     email: Joi.string().email({ minDomainSegments: 2 }).required(),
@@ -21,7 +26,11 @@ function validateRegisterMiddleware(req, res, next) {
   req.body = value;
   next();
 }
-
+/**
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 function validateLoginMiddleware(req, res, next) {
   const loginSchema = Joi.object({
     username: Joi.string(),
@@ -34,10 +43,15 @@ function validateLoginMiddleware(req, res, next) {
 
   next();
 }
-
+/**
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 function validatedVacationMiddleware(req, res, next) {
-  if (req.files && Object.keys(req.body).length === 0) return next();
-
+  if (req.method == "PUT" && req.files && Object.keys(req.body).length === 0)
+    return next();
+  if (!req.files) return res.status(400).send("Picture is required");
   const vacationSchema = Joi.object({
     description: Joi.string().min(10).max(36000),
     destination: Joi.string().min(3).max(60),

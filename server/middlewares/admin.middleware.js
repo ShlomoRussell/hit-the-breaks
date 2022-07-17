@@ -1,5 +1,11 @@
 import { checkIfIsAdmin } from "../bl/index.js";
+import express from "express";
 
+/**
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ */
 export default async function (req, res, next) {
   try {
     const res = await checkIfIsAdmin(req.headers.id);
