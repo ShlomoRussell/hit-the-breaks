@@ -1,4 +1,5 @@
 import { apiSlice } from "../../app/api/apiSlice";
+import reportApiSlice from "../../features/reports/reportsApiSlice";
 import usersVacationsApi from "../../features/vacations/userVacationsApiSlice";
 import { getSocket } from "./socket.io.service";
 import { SocketEvents } from "./socketEvents.enum";
@@ -19,10 +20,14 @@ const socketApiSlice = apiSlice.injectEndpoints({
             dispatch(setVacationIsUpdated(true));
           });
           socket.on(SocketEvents.followersUpdated, (id: string) => {
-            const { refetch } = dispatch(
+            const { refetch: refetchFollowers } = dispatch(
               usersVacationsApi.endpoints.getVacationFollowers.initiate(id)
             );
-            refetch();
+            const { refetch: refetchReports } = dispatch(
+              reportApiSlice.endpoints.getReports.initiate(null)
+            );
+            refetchReports();
+            refetchFollowers();
           });
         } catch (error) {
           console.log(error);

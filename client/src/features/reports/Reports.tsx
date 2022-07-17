@@ -15,14 +15,6 @@ import { selectIsAdmin } from "../auth/authSlice";
 import { selectAllVacations } from "../vacations/usersVacationsSlice";
 import { useGetReportsQuery } from "./reportsApiSlice";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 function Reports() {
   const isAdmin = useSelector(selectIsAdmin)
@@ -30,6 +22,15 @@ function Reports() {
  
   const { data } = useGetReportsQuery(null);
   const [datasets, setDatasets] = useState([]);
+  const [labels, setLabels] = useState<string[]>([]);
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+  );
   const options = {
     responsive: true,
     plugins: {
@@ -42,30 +43,44 @@ function Reports() {
       },
     },
   };
-  const randomColor = () => Math.floor(Math.random() * 255);
-  const labels = vacations.map((v) => v.destination);
+  const randomColorValue = () => Math.floor(Math.random() * 255);
+
   useEffect(() => {
       if (data) {
       setDatasets(
         data
           .filter(
-            (cd: { vacationId: string; totalFollowers: number }) =>
-              cd.totalFollowers>0
+            (cd: { destination: string; totalFollowers: number }) =>
+              cd.totalFollowers > 0
           )
-          .map((cd: { vacationId: string; totalFollowers: number }) => ({
-            label: vacations.find((v) => v.id)?.destination,
-            data: cd.totalFollowers,
-            backgroundColor: `rgb(${randomColor()},${randomColor()},${randomColor()})`,
+          .map((cd: { destination: string; totalFollowers: number }) => ({
+            label: cd.destination,
+            data: [cd.totalFollowers],
+            backgroundColor: `rgb(${randomColorValue()},${randomColorValue()},${randomColorValue()})`,
           }))
-      );
+        );
+        setLabels(
+          data.filter(
+            (cd: { destination: string; totalFollowers: number }) =>
+              cd.totalFollowers > 0
+          ).map((cd: { destination: string; totalFollowers: number })=>cd.destination)
+        );
+
     }
 
   }, [data, vacations]);
   const currentData = {
-    /*       labels, */
+   labels,
     datasets,
   };
-  return isAdmin?  <Bar options={options} data={currentData} />:<NotFound/>;
+  return isAdmin ? (
+    <div className="container">
+    
+      <Bar options={options} data={currentData} />
+    </div>
+  ) : (
+    <NotFound />
+  );
 }
 
 export default Reports;
