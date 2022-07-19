@@ -4,7 +4,7 @@ type updates = {
 };
 const updatesSlice = createSlice({
   name: "updates",
-  initialState: { vacationsIsUpdated: false, followersIsUpdated: null },
+  initialState: { vacationsIsUpdated: false},
   reducers: {
     setVacationIsUpdated: (state, action) => {
       return { ...state, vacationsIsUpdated: action.payload };
